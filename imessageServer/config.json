@@ -3,8 +3,8 @@
 "port":5000,
 "contacts":[
 	{
-		"buddyName":"Mason Manetta",
-		"displayName":"Mason" 
+		"buddyName":"Demo",
+		"displayName":"Demo" 
 	}
 
 ]
