@@ -14,6 +14,8 @@ curl -o PebbleImessageServer/config.json https://raw.githubusercontent.com/integ
 
 curl -o PebbleImessageServer/requirements.txt https://raw.githubusercontent.com/integraloftheday/Pebble-Imessager/master/imessageServer/requirements.txt
 
+curl -o PebbleImessageServer/start.sh https://raw.githubusercontent.com/integraloftheday/Pebble-Imessager/master/imessageServer/start.sh
+
 pip install -r PebbleImessageServer/requirements.txt
 
 echo "Now edit config.json to add contacts, to change the port number, and to set the key" 
