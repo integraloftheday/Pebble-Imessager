@@ -1,0 +1,53 @@
+{
+  "appKeys": {},
+  "capabilities": [
+    "configurable"
+  ],
+  "companyName": "mcmanetta",
+  "longName": "iMessenger",
+  "resources": {
+    "media": [
+      {
+        "file": "images/pebble_msg_menu_icon.png",
+        "menuIcon": true,
+        "name": "IMAGE_MENU_ICON",
+        "type": "bitmap"
+      },
+      {
+        "file": "images/checkMark.png",
+        "name": "CHECK_MARK",
+        "type": "bitmap"
+      },
+      {
+        "file": "images/logo_splash.png",
+        "name": "IMAGE_LOGO_SPLASH",
+        "type": "bitmap"
+      },
+      {
+        "file": "images/tile_splash.png",
+        "name": "IMAGE_TILE_SPLASH",
+        "type": "bitmap"
+      },
+      {
+        "file": "fonts/UbuntuMono-Regular.ttf",
+        "name": "MONO_FONT_14",
+        "type": "font"
+      }
+    ]
+  },
+  "sdkVersion": "3",
+  "shortName": "iMessenger",
+  "targetPlatforms": [
+    "aplite",
+    "basalt",
+    "chalk",
+    "diorite",
+    "emery"
+  ],
+  "uuid": "133215f0-cf20-4c05-997b-3c9be5a64e5b",
+  "versionCode": 1,
+  "versionLabel": "0.4",
+  "watchapp": {
+    "watchface": false
+  }
+}
