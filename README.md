@@ -46,7 +46,8 @@ Inside the `PebbleImessageServer` folder there is a file `config.json` which inc
 The `"key"` is generated in the watch app and must be set to the same value. The `"port"` is what port the server runs on and `"contacts"` 
 is the list of everyone the watch app can message. Each contact has two fields `"buddyName"` which is the exact name as displayed on the Mac
 in iMessages. The `"displayName"` is what name will be displayed in the watch app. As many contacts as needed can be added to `config.json`
-below is an example of a config file on port 2020 with 3 contacts. 
+below is an example of a config file on port 2020 with 3 contacts. **Note** when editing `config.json` restarting the server is not needed
+unless the `"port"` has be edited. 
 
 ```json 
 {
@@ -68,4 +69,21 @@ below is an example of a config file on port 2020 with 3 contacts.
 ]
 }
 ```
+## Watch Installation 
+Currently the watch app needs to be sideloaded but could be added to the rebble store in the future. 
+### Requirements 
+1. A microphone enabled pebble watch 
+2. A [rebble voice subscription] (https://rebble.io)
+### Side Loading 
+1. Downloaded the latest .pbw file from the [releases](https://github.com/integraloftheday/Pebble-Imessager/releases/tag/v1.0) on your phone. 
+2. Click the share icon then "more" then select "Copy to Pebble"
+
+The pebble app then will install the watch app. 
+### Watch App Configuration 
+These steps must be done before the watch app can be used. 
+1. Click "Settings" and scroll to "Server IP" select and enter the Server's IP address and Port Number
+2. Click "key Generate" and updated `config.json` to match the key displayed on the watch app 
+3. Click "Contact Fetch" to update the watches internal contacts. This can be done after any update to `config.json`
+4. Click "Current" if everything was entered correctly and working the server IP the key and any contacts should be displayed.
+5. Send Messages! by clicking on the contacts name on the main menu. 
 
