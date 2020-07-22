@@ -126,6 +126,7 @@ function getContacts(){
 }
 
 function menuSections(){
+	try{
 	var contactS = Settings.data('contacts');
 	var contacts = contactS.value;
 	var sections= []; 
@@ -135,6 +136,10 @@ function menuSections(){
 		});
 	}
 	return(sections);
+	}
+	catch(error){
+		return([{title:""}]);
+	}
 }
 
 function keyGen(length){
