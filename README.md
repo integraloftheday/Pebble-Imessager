@@ -73,9 +73,9 @@ unless the `"port"` has be edited.
 Currently the watch app needs to be sideloaded but could be added to the rebble store in the future. 
 ### Requirements 
 1. A microphone enabled pebble watch 
-2. A [rebble voice subscription] (https://rebble.io)
+2. A [rebble voice subscription](https://rebble.io)
 ### Side Loading 
-1. Downloaded the latest .pbw file from the [releases](https://github.com/integraloftheday/Pebble-Imessager/releases/tag/v1.0) on your phone. 
+1. Downloaded the latest .pbw file from the [releases](https://github.com/integraloftheday/Pebble-Imessager/releases) on your phone. 
 2. Click the share icon then "more" then select "Copy to Pebble"
 
 The pebble app then will install the watch app. 
