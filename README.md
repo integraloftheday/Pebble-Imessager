@@ -9,6 +9,14 @@ Since the takeover by Fitbit pebble smartwatches could no longer send messages o
 applications users can once again send iMessage’s from iPhones. To accomplish this the application uses a server running on a Mac (or 
 [emulated Mac](https://github.com/foxlet/macOS-Simple-KVM)) to send messages.
 
+## Branch Notes 
+This is the development branch of Pebble-Imessager to process changes before pusing to the main branch. 
+
+## TO-DO 
+1. [x] Create Documentation 
+2. [ ] Add Canned Responses 
+3. [ ] Add Https for non-local connections
+
 ## A Security Note 
 In the current state all server requests are sent over http which is not encrypted. In the future it is planed 
 to update this to https to ensure fully encrypted requests. In the meantime, it is recommended to only use this application over local
