@@ -105,7 +105,7 @@ Inside the `PebbleImessageServer` folder there is a file `config.json` which inc
 	"on":"true", 
 	"responses":[
 		"yes",
-		"no";	
+		"no"	
 	]
 },
 "contacts":[
