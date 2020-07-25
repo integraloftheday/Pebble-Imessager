@@ -19,6 +19,11 @@
         "type": "bitmap"
       },
       {
+        "file": "images/pebble_msg_voice_icon.png",
+        "name": "VOICE",
+        "type": "bitmap"
+      },
+      {
         "file": "images/logo_splash.png",
         "name": "IMAGE_LOGO_SPLASH",
         "type": "bitmap"
