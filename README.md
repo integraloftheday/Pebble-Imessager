@@ -101,11 +101,11 @@ Inside the `PebbleImessageServer` folder there is a file `config.json` which inc
 {
 "key":"abc",
 "port":2020,
-&quot;quickReplies&quot;:{
-	&quot;on&quot;:&quot;true&quot;, 
-	&quot;responses&quot;:[
-		&quot;yes&quot;,
-		&quot;no&quot;	
+"quickReplies":{
+	"on":"true", 
+	"responses":[
+		"yes",
+		"no";	
 	]
 },
 "contacts":[
