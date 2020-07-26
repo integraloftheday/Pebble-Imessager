@@ -1,11 +1,13 @@
-{
+{a
 "key":"abc",
 "port":5000,
 "quickReplies":{
 	"on":"true", 
 	"responses":[
+		"<Voice>",
 		"yes",
-		"no"	
+		"no",
+		"<Keyboard>"	
 	]
 },
 "contacts":[

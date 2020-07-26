@@ -9,7 +9,11 @@ var Vector2 = require('vector2');
 var ajax = require('ajax');
 var Voice = require('ui/voice');
 var Settings = require('settings');
+var Platform = require('platform');
 var digitInput = require('digit-input.js').digitInput;
+var Keyboard = require('pebblejs-keyboard'); 
+
+
 
 var baseUrl = "http://";
 var IP = [[0],[0],[0],[0]];
@@ -127,9 +131,23 @@ function parseReplies(){
 		var Qreplies = Settings.data('replies'); 
 		var sections = []; 
 		for(var i = 0; i < Qreplies.value.responses.length; i++){
-			sections.push({
-				title:Qreplies.value.responses[i]
-			});
+			if((Qreplies.value.responses[i] == "<Voice>") && Feature.microphone()){ //only appends voice if watch supports mic
+				sections.push({
+						title:'Voice',
+                       				icon: 'images/pebble_msg_voice_icon.png'
+					});
+			}
+			else if(Qreplies.value.response[i] == "<Keyboard>"){
+				sections.push({
+                                                title:'Keyboard',
+                                                icon: 'images/pebble_msg_keyboard_icon.png'
+                                        });
+			}
+			else{
+				sections.push({
+					title:Qreplies.value.responses[i]
+				});
+			}
 		}
 		return(sections);
 	}
@@ -186,6 +204,10 @@ function keyGen(length){
 
 
 function msgSend(to,msg){
+	//to: contact name
+	//msg: false -> voice response 
+	//msg: str -> string response (canned response) 
+	//msg: true -> keyboard response 
 	var url = Settings.data('URL'); 
 	var key = Settings.data('key'); 
 	var postUrl = url.value + "/msg/api/v1/send"; 

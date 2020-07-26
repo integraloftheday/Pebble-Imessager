@@ -24,6 +24,11 @@
         "type": "bitmap"
       },
       {
+        "file": "images/pebble_msg_keyboard_icon.png",
+        "name": "KEYBOARD",
+        "type": "bitmap"
+      },
+      {
         "file": "images/logo_splash.png",
         "name": "IMAGE_LOGO_SPLASH",
         "type": "bitmap"
