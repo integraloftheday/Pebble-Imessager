@@ -1,11 +1,19 @@
 {
-"key":"abc",
+"key":"sQJFD*rnoWI_nUwx",
 "port":5000,
+"quickReplies":{
+	"on":"true", 
+	"responses":[
+		"<Voice>",
+		"yes",
+		"no",
+		"<Keyboard>"	
+	]
+},
 "contacts":[
 	{
 		"buddyName":"Demo",
 		"displayName":"Demo" 
 	}
-
 ]
 }

@@ -9,26 +9,50 @@ var Vector2 = require('vector2');
 var ajax = require('ajax');
 var Voice = require('ui/voice');
 var Settings = require('settings');
+var Feature = require('platform/feature');
 var digitInput = require('digit-input.js').digitInput;
-//var Clay = require('clay'); removed clay support Could not figure Out how to get it working
-//var clayConfig = require('config.json');
-//var clay = new Clay(clayConfig, null, {autoHandleEvents:false});
+var Keyboard = require('pebblejs-keyboard.js').Keyboard; 
+
+
 
 var baseUrl = "http://";
 var IP = [[0],[0],[0],[0]];
 var Port = 0; 
-var key = "ux4I8B8ZLGyPJY3QBAOx";
-var sectionCons; 
+var sectionCons;
+var toNext; // allows for the passing of contact name from menu to repliesMenu
 
 //Ip functions
-function IPget(){
+
+function setBaseUrl(callback){
+	var httpsQ = new UI.Card({
+		title:"Use https", 
+		body:"Default http (must match server)",
+		action: {
+                        up:"images/checkMark.png",
+			down:"images/pebble_msg_cross_icon.png"
+                }
+	});
+	httpsQ.on('click','up', function(){
+		baseUrl = "https://";
+		httpsQ.hide();
+		IPNumGet();
+	});
+	httpsQ.on('click','down', function(){
+		baseUrl = "http://";
+		httpsQ.hide();
+		IPNumGet();
+	});
+	httpsQ.show();
+}
+
+
+function IPNumGet(){
 	var inst = new UI.Card({
 		title:"Instructions",
 		style:"small",
 		body:"Enter the server's IP address with 3 digit blocks, Port with 4 digits \"___.___.___.___:____\". Press select",
 		scrollable:true
 	}); 
-
 	options = {backgroundColor:'white', textColor:'black',fieldBackgroundColor:'white', selectedFieldBackgroundColor:'black', selectedFieldTextColor:'white', count:3}
 	var ipInput1 = digitInput(options, function (result) {
                 IP[0] = Number(result);
@@ -67,6 +91,10 @@ function IPget(){
 	});
 }
 
+function IPget(){
+	setBaseUrl(); 
+}
+
 function ipConf(){
  	var conf = new UI.Card({
 		 title: 'IP:',
@@ -86,6 +114,7 @@ function ipConf(){
 
 	conf.show();
 }
+
 
 function ipToString(){
 	return(String(IP[0]) +'.'+String(IP[1])+'.'+String(IP[2])+'.'+String(IP[3]));
@@ -125,6 +154,54 @@ function getContacts(){
 	);
 }
 
+function parseReplies(){
+	try{
+		var Qreplies = Settings.data('replies'); 
+		var sections = []; 
+		for(var i = 0; i < Qreplies.value.responses.length; i++){
+			if((Qreplies.value.responses[i] == "<Voice>")&& Feature.microphone()){ //only appends voice if watch supports mic
+				sections.push({
+						title:'Voice',
+                       				icon: 'images/pebble_msg_voice_icon.png'
+					});
+			}
+			else if(Qreplies.value.responses[i] == "<Keyboard>"){
+				sections.push({
+                                                title:'Keyboard',
+                                                icon: 'images/pebble_msg_keyboard_icon.png'
+                                        });
+			}
+			else{
+				sections.push({
+					title:Qreplies.value.responses[i]
+				});
+			}
+		}
+		return(sections);
+	}
+	catch(error){
+		return([{title:""}]); 
+	}
+
+}
+
+function getReplies(){
+	var url = Settings.data('URL'); 
+	var key = Settings.data('key');
+	var postUrl = url.value + "/msg/api/v1/replies"; 
+	ajax({url:postUrl, type:'json', method:'post',data:{'key':key.value}},
+		function(data,statusV){
+			Settings.data('replies',{value:data.quickReplies});
+			var replies = parseReplies();
+        		repliesMenu.items(0,replies);
+		},
+		function(errorV,statusV){
+			errorCon.show();
+		}
+	);
+
+}
+
 function menuSections(){
 	try{
 	var contactS = Settings.data('contacts');
@@ -154,40 +231,83 @@ function keyGen(length){
 }
 
 
-function msgSend(to){
-	var url = Settings.data('URL');
-	var key = Settings.data('key');
-	var postUrl = url.value + "/msg/api/v1/send";
-	Voice.dictate('start',true,function(e){
-		if(e.err){
-			console.log('Error:'+e.err);
-			return; 
-		}
-		if(e.transcription!=""){
-			var msg = e.transcription.replace("'","\'");
+function msgSend(to,msg){
+	//to: contact name
+	//msg: false -> voice response 
+	//msg: str -> string response (canned response) 
+	//msg: true -> keyboard response 
+	var url = Settings.data('URL'); 
+	var key = Settings.data('key'); 
+	var postUrl = url.value + "/msg/api/v1/send"; 
+	if(msg == false){
+		//send message by voice
+		Voice.dictate('start',true,function(e){
+			if(e.err){
+				console.log('Error:'+e.err);
+				return; 
+			}
+			if(e.transcription!=""){
+				var msgTransc = e.transcription.replace("'","\'");
 			
-			ajax({url: postUrl,type:'json',method:'post',data:{"msg":msg,"to":to,"key":key.value}},
-				function(data,status){
-					//worked
-					console.log("success");
-				},
-				function(errorV,status){
-					//error
-					//Error Handeling is still not working figure out
-					errorMsg.show();
-				}
-			);}
+				ajax({url: postUrl,type:'json',method:'post',data:{"msg":msgTransc,"to":to,"key":key.value}},
+					function(data,status){
+						//worked
+						console.log("success");
+					},
+					function(errorV,status){
+						//error
+						errorMsg.show();
+					}
+				);}
+			});
+	}
+	else if(msg == true){
+		var window = new UI.Window({
+       			 fullscreen: true
+   		 });
+		var myKeyboard = new Keyboard(window);
+		window.show();
+		myKeyboard.show();
+		myKeyboard.on('text', function(input) {
+                	ajax({url: postUrl,type:'json',method:'post',data:{"msg":input,"to":to,"key":key.value}},
+                        	function(data,status){
+                        	        //worked
+                        	        console.log("success");
+                        	},
+                        	function(errorV,status){
+                        	        //error
+                        	        errorMsg.show();
+                        	}
+                	);	
+			myKeyboard.hide();
+			window.hide();
 		});
+	}
+
+	else{
+ 		ajax({url: postUrl,type:'json',method:'post',data:{"msg":msg,"to":to,"key":key.value}},
+			function(data,status){
+				//worked
+                                console.log("success");
+                        },
+                        function(errorV,status){
+                                //error
+                                errorMsg.show();
+                        }
+                );
+	}
 }
+
 function dispCurrent(){
 	var url = Settings.data('URL');
 	var key = Settings.data('key');
 	var contacts = Settings.data('contacts'); 
+	var Qreplies = Settings.data('replies');
 	var Current = new UI.Card({
 		title:"IP & Key",
 		style:'small',
 		scrollable:true,
-		body:"key:\n"+String(key.value)+"\nUrl:\n"+String(url.value)+"\n Contacts:\n"+JSON.stringify(contacts.value)
+		body:"key:\n"+String(key.value)+"\nUrl:\n"+String(url.value)+"\n Contacts:\n"+JSON.stringify(contacts.value)+"\n Replies:\n"+JSON.stringify(Qreplies.value) 
 	});
 	Current.show();
 }
@@ -225,7 +345,7 @@ var settingsMenu = new UI.Menu({
 			icon:'images/pebble_msg_menu_icon.png'
 		},
 		{
-			title:"Contact Fetch"
+			title:"Data Fetch"
 		},
 		{
 			title:'Server IP'
@@ -251,8 +371,10 @@ settingsMenu.on('select',function(e){
 	else if(e.item.title == "Current"){
 		dispCurrent();
 	}
-	else if(e.item.title =="Contact Fetch"){
+	else if(e.item.title =="Data Fetch"){
 		getContacts();
+		getReplies();
+
 	}
 });
 
@@ -274,18 +396,52 @@ menu.on('select',function(e){
 	}
 	else{
 		var contacts = Settings.data('contacts');
-		msgSend(contacts.value[e.itemIndex].buddyName);	
+		var Qreplies = Settings.data('replies'); 
+		if(Qreplies.value.on == "true"){
+			//check if instant replies are on ("true")
+			toNext = contacts.value[e.itemIndex].buddyName;
+			repliesMenu.selection(0,0);
+			repliesMenu.show();
+		}
+		else{
+			//if instant replies are off ("false")
+			msgSend(toNext,false);
+		}
+
+	}
+});
+
+//for instant replies
+var repliesMenu = new UI.Menu({
+	sections: [{
+		items: [{
+			title:'Base'
+		}]
+	},
+	]
+});
+
+repliesMenu.on('select', function(e){
+	if(e.item.title == "Voice"){
+		msgSend(toNext,false);
+	}
+	else if(e.item.title == "Keyboard"){
+		msgSend(toNext,true);
+	}
+	else{
+		msgSend(toNext,e.item.title);
 	}
 });
 
 function main(){
-	sectionCons = menuSections(); 
+	var sectionCons = menuSections(); 
+	var replies = parseReplies();
+	repliesMenu.items(0,replies);
 	menu.items(2,sectionCons);
 	menu.show();
-	//init();
 }
 
 //Main Start 
-
 main();
+
 
