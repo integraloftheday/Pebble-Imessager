@@ -116,8 +116,8 @@ Inside the `PebbleImessageServer` folder there is a file `config.json` which inc
     "responses":[
         "<Voice>",
         "yes",
-        "no";,
-        "<Keyboard>";  
+        "no",
+        "<Keyboard>"  
     ]
 },
 "contacts":[
