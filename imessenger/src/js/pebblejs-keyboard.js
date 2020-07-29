@@ -208,6 +208,6 @@ function timerFunc() {
     }
 }
 
-if (typeof module !== 'undefined') {
-  module.exports = Keyboard;
+module.exports = {
+	Keyboard:Keyboard 
 }

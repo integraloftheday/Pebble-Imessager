@@ -9,9 +9,9 @@ var Vector2 = require('vector2');
 var ajax = require('ajax');
 var Voice = require('ui/voice');
 var Settings = require('settings');
-var Platform = require('platform');
+var Feature = require('platform/feature');
 var digitInput = require('digit-input.js').digitInput;
-var Keyboard = require('pebblejs-keyboard'); 
+var Keyboard = require('pebblejs-keyboard.js').Keyboard; 
 
 
 
@@ -22,14 +22,37 @@ var sectionCons;
 var toNext; // allows for the passing of contact name from menu to repliesMenu
 
 //Ip functions
-function IPget(){
+
+function setBaseUrl(callback){
+	var httpsQ = new UI.Card({
+		title:"Use https", 
+		body:"Default http (must match server)",
+		action: {
+                        up:"images/checkMark.png",
+			down:"images/pebble_msg_cross_icon.png"
+                }
+	});
+	httpsQ.on('click','up', function(){
+		baseUrl = "https://";
+		httpsQ.hide();
+		IPNumGet();
+	});
+	httpsQ.on('click','down', function(){
+		baseUrl = "http://";
+		httpsQ.hide();
+		IPNumGet();
+	});
+	httpsQ.show();
+}
+
+
+function IPNumGet(){
 	var inst = new UI.Card({
 		title:"Instructions",
 		style:"small",
 		body:"Enter the server's IP address with 3 digit blocks, Port with 4 digits \"___.___.___.___:____\". Press select",
 		scrollable:true
 	}); 
-
 	options = {backgroundColor:'white', textColor:'black',fieldBackgroundColor:'white', selectedFieldBackgroundColor:'black', selectedFieldTextColor:'white', count:3}
 	var ipInput1 = digitInput(options, function (result) {
                 IP[0] = Number(result);
@@ -68,6 +91,10 @@ function IPget(){
 	});
 }
 
+function IPget(){
+	setBaseUrl(); 
+}
+
 function ipConf(){
  	var conf = new UI.Card({
 		 title: 'IP:',
@@ -87,6 +114,7 @@ function ipConf(){
 
 	conf.show();
 }
+
 
 function ipToString(){
 	return(String(IP[0]) +'.'+String(IP[1])+'.'+String(IP[2])+'.'+String(IP[3]));
@@ -131,13 +159,13 @@ function parseReplies(){
 		var Qreplies = Settings.data('replies'); 
 		var sections = []; 
 		for(var i = 0; i < Qreplies.value.responses.length; i++){
-			if((Qreplies.value.responses[i] == "<Voice>") && Feature.microphone()){ //only appends voice if watch supports mic
+			if((Qreplies.value.responses[i] == "<Voice>")&& Feature.microphone()){ //only appends voice if watch supports mic
 				sections.push({
 						title:'Voice',
                        				icon: 'images/pebble_msg_voice_icon.png'
 					});
 			}
-			else if(Qreplies.value.response[i] == "<Keyboard>"){
+			else if(Qreplies.value.responses[i] == "<Keyboard>"){
 				sections.push({
                                                 title:'Keyboard',
                                                 icon: 'images/pebble_msg_keyboard_icon.png'
@@ -165,7 +193,7 @@ function getReplies(){
 		function(data,statusV){
 			Settings.data('replies',{value:data.quickReplies});
 			var replies = parseReplies();
-        		repliesMenu.items(2,replies);
+        		repliesMenu.items(0,replies);
 		},
 		function(errorV,statusV){
 			errorCon.show();
@@ -233,6 +261,29 @@ function msgSend(to,msg){
 				);}
 			});
 	}
+	else if(msg == true){
+		var window = new UI.Window({
+       			 fullscreen: true
+   		 });
+		var myKeyboard = new Keyboard(window);
+		window.show();
+		myKeyboard.show();
+		myKeyboard.on('text', function(input) {
+                	ajax({url: postUrl,type:'json',method:'post',data:{"msg":input,"to":to,"key":key.value}},
+                        	function(data,status){
+                        	        //worked
+                        	        console.log("success");
+                        	},
+                        	function(errorV,status){
+                        	        //error
+                        	        errorMsg.show();
+                        	}
+                	);	
+			myKeyboard.hide();
+			window.hide();
+		});
+	}
+
 	else{
  		ajax({url: postUrl,type:'json',method:'post',data:{"msg":msg,"to":to,"key":key.value}},
 			function(data,status){
@@ -364,8 +415,7 @@ menu.on('select',function(e){
 var repliesMenu = new UI.Menu({
 	sections: [{
 		items: [{
-			title:'Voice',
-			icon: 'images/pebble_msg_voice_icon.png'
+			title:'Base'
 		}]
 	},
 	]
@@ -375,6 +425,9 @@ repliesMenu.on('select', function(e){
 	if(e.item.title == "Voice"){
 		msgSend(toNext,false);
 	}
+	else if(e.item.title == "Keyboard"){
+		msgSend(toNext,true);
+	}
 	else{
 		msgSend(toNext,e.item.title);
 	}
@@ -383,13 +436,12 @@ repliesMenu.on('select', function(e){
 function main(){
 	var sectionCons = menuSections(); 
 	var replies = parseReplies();
-	repliesMenu.items(2,replies);
+	repliesMenu.items(0,replies);
 	menu.items(2,sectionCons);
 	menu.show();
-	//init();
 }
 
 //Main Start 
-
 main();
+
 

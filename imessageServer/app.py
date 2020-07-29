@@ -1,6 +1,7 @@
 from flask import Flask, session, json,request
 from flask_cors import CORS
 from gevent.pywsgi import WSGIServer
+import os.path
 import subprocess
 import json as js
 
@@ -15,6 +16,7 @@ def getConfig():
 app = Flask(__name__)
 CORS(app, resources=r'/msg/api*')
 
+#send message 
 @app.route('/msg/api/v1/send',methods=['POST'])
 def sendMsg():
     config = getConfig() 
@@ -45,6 +47,7 @@ def sendMsg():
         print(postData)
         return({"success":"false"},400)
 
+#get contacts
 @app.route("/msg/api/v1/contacts", methods=['POST'])
 def getContacts():
     config = getConfig()
@@ -56,6 +59,7 @@ def getContacts():
         print(postData)
         return({"success":"false"},400)
 
+#get quick replies 
 @app.route("/msg/api/v1/replies", methods=['POST'])
 def getReplies():
     config = getConfig() 
@@ -72,12 +76,15 @@ def get_exception():
 
 @app.errorhandler(500)
 def server_error(e):
-    #logging.exception('An error occurred during a request. %s', e)
     return "An internal error occured", 500
 
-
 print("Starting Server")
-http_server = WSGIServer(('', getConfig()["port"]), app)
-http_server.serve_forever()
-
-
+#Added option for https however ios does not like self signed certificates
+if(os.path.isfile('cert.pem') and os.path.isfile('key.pem')):
+    print("https:")
+    https_server = WSGIServer(('', getConfig()["port"]), app,certfile='cert.pem', keyfile='key.pem')
+    https_server.serve_forever()
+else:
+    print("http:")
+    http_server = WSGIServer(('', getConfig()["port"]))
+    http_server.serve_forever()
