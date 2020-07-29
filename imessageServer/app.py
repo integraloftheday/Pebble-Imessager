@@ -86,5 +86,5 @@ if(os.path.isfile('cert.pem') and os.path.isfile('key.pem')):
     https_server.serve_forever()
 else:
     print("http:")
-    http_server = WSGIServer(('', getConfig()["port"]))
+    http_server = WSGIServer(('', getConfig()["port"]),app)
     http_server.serve_forever()
