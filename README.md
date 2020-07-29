@@ -114,10 +114,10 @@ Inside the `PebbleImessageServer` folder there is a file `config.json` which inc
 "quickReplies":{
     "on":"true", 
     "responses":[
-        &quot;&lt;Voice&gt;&quot;,
-        &quot;yes&quot;,
-        &quot;no&quot;,
-        &quot;&lt;Keyboard&gt;&quot;  
+        "<Voice>",
+        "yes",
+        "no";,
+        "<Keyboard>";  
     ]
 },
 "contacts":[
@@ -147,11 +147,11 @@ Currently the watch app needs to be sideloaded but could be added to the rebble 
 
 2. ~~A [rebble voice subscription](https://rebble.io)~~ (Only required for voice respones)
    
-   ### Side Loading
+### Side Loading
 
-3. Downloaded the latest .pbw file from the [releases](https://github.com/integraloftheday/Pebble-Imessager/releases) on your phone. 
+1. Downloaded the latest .pbw file from the [releases](https://github.com/integraloftheday/Pebble-Imessager/releases) on your phone. 
 
-4. Click the share icon then "more" then select "Copy to Pebble"
+2. Click the share icon then "more" then select "Copy to Pebble"
 
 The pebble app then will install the watch app. 
 
