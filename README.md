@@ -20,10 +20,8 @@ This is the development branch of Pebble-Imessager to process changes before pus
 
 1. [x] Create Documentation 
 2. [x] Add Canned Responses 
-3. [ ] Add Https for non-local connections
+3. [ ] Add Https for non-local connections. Problem [Apple Certificates](https://support.apple.com/en-us/HT210176)
 4. [ ] Create a web interface for `config.json`
-
-
 
 ## Updates
 
@@ -41,15 +39,21 @@ networks or use a VPN to establish a secure connection to a local network.
 ### Requirments
 
 1. A Mac or [emulated Mac](https://github.com/foxlet/macOS-Simple-KVM) with iMessage signed in 
+
 2. Xcode Command Line Tools, Can be installed by typeing `xcode-select --install` in terminal 
+
 3. Python3 (sometimes included in Xcode Command Line Tools or can be installed at (python.org)[https://www.python.org/])
    
    ### Steps
    
    The simplest way is to use the install.sh script. It only downloads the required files. 
+
 4. `curl -o install.sh https://raw.githubusercontent.com/integraloftheday/Pebble-Imessager/master/installer.sh` 
+
 5. `sh install.sh` The server should install inside a folder called "PebbleImessageServer" 
+
 6. `cd PebbleImessageServer`
+
 7. `sh start.sh` To run the server 
 
 To keep the server running [screen](http://www.kinnetica.com/2011/05/29/using-screen-on-mac-os-x/) can be used. 
@@ -63,20 +67,21 @@ Inside the `PebbleImessageServer` folder there is a file `config.json` which inc
 "key":"abc",
 "port":5000,
 "quickReplies":{
-	"on":"true", 
-	"responses":[
-		"yes",
-		"no"	
-	]
+    "on":"true", 
+    "responses":[
+        "<Voice>",
+        "yes",
+        "no",
+        "<Keyboard>"    
+    ]
 },
 "contacts":[
-	{
-		"buddyName":"Demo",
-		"displayName":"Demo" 
-	}
+    {
+        "buddyName":"Demo",
+        "displayName":"Demo" 
+    }
 ]
 }
-
 ```
 
 * `"key"` is generated in the watch app and must be set to the same value.
@@ -87,7 +92,11 @@ Inside the `PebbleImessageServer` folder there is a file `config.json` which inc
   
   * `"on"` when set to `"true"` enables quick replies `"false"` only uses voice
   
-  * `"responses"` is the array of all canned responses
+  * `"responses"` is the array of all canned responses. (Show up in order)
+    
+    * `"<Voice>"` is where the voice input option is displayed
+    
+    * `"<Keyboard>"` is where the keyboard option ins displayed
 
 * `"contacts"` is the list of everyone the watch app can message. 
   
@@ -103,11 +112,13 @@ Inside the `PebbleImessageServer` folder there is a file `config.json` which inc
 "key":"abc",
 "port":2020,
 "quickReplies":{
-	"on":"true", 
-	"responses":[
-		"yes",
-		"no"	
-	]
+    "on":"true", 
+    "responses":[
+        &quot;&lt;Voice&gt;&quot;,
+        &quot;yes&quot;,
+        &quot;no&quot;,
+        &quot;&lt;Keyboard&gt;&quot;  
+    ]
 },
 "contacts":[
     {
@@ -133,10 +144,13 @@ Currently the watch app needs to be sideloaded but could be added to the rebble 
 ### Requirements
 
 1. A microphone enabled pebble watch 
-2. A [rebble voice subscription](https://rebble.io)
+
+2. ~~A [rebble voice subscription](https://rebble.io)~~ (Only required for voice respones)
    
    ### Side Loading
+
 3. Downloaded the latest .pbw file from the [releases](https://github.com/integraloftheday/Pebble-Imessager/releases) on your phone. 
+
 4. Click the share icon then "more" then select "Copy to Pebble"
 
 The pebble app then will install the watch app. 
