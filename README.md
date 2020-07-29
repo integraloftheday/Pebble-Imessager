@@ -28,6 +28,7 @@ This is the development branch of Pebble-Imessager to process changes before pus
 ## Updates
 
 * **7-25-20** : Created ability for Canned Responses. This depends on editing `config.json`  and changing the array `"responses"` within the `"quickReplyies"` object. This can be updated to any length of array responses and appear in such order inside the app. However for those who want direct acess to voice commands `"on"` in `config.json` when set to `"false"` removes all response. With the addition of these Canned Respones `"Current"` in settings was updated to display them and `Contact Fetch` was changed to `Data Fetch`  
+* **7-26-20** : Allowed for the Canned Response menu to be fully customizable (allowing setting location of `voice` and `keyboard`. The `keyboard` allows for text input which uses [PebbleJS Keyboard](https://github.com/jor3l/pebblejs-keyboard) as the keyboard module. 
 
 ## A Security Note
 
