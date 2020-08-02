@@ -20,19 +20,18 @@ This is the development branch of Pebble-Imessager to process changes before pus
 
 1. [x] Create Documentation 
 2. [x] Add Canned Responses 
-3. [ ] Add Https for non-local connections. Problem [Apple Certificates](https://support.apple.com/en-us/HT210176)
+3. [x] Add https for non-local connections. ~~Problem [Apple Certificates](https://support.apple.com/en-us/HT210176)~~
 4. [ ] Create a web interface for `config.json`
 
 ## Updates
 
 * **7-25-20** : Created ability for Canned Responses. This depends on editing `config.json`  and changing the array `"responses"` within the `"quickReplyies"` object. This can be updated to any length of array responses and appear in such order inside the app. However for those who want direct acess to voice commands `"on"` in `config.json` when set to `"false"` removes all response. With the addition of these Canned Respones `"Current"` in settings was updated to display them and `Contact Fetch` was changed to `Data Fetch`  
 * **7-26-20** : Allowed for the Canned Response menu to be fully customizable (allowing setting location of `voice` and `keyboard`. The `keyboard` allows for text input which uses [PebbleJS Keyboard](https://github.com/jor3l/pebblejs-keyboard) as the keyboard module. 
+* **8-2-20** : Added https support using [openssl](https://www.openssl.org/) following this [IOS 13 SSL guide](https://jaanus.com/ios-13-certificates/). The installer now has an https option. This option creates the required self-signed certificates needed to encrypt an ip address. After the install is done the user now has to install `iMessager-ca.crt` as a trusted certificate to their iphone. This includeds enabling root acess. 
 
 ## A Security Note
 
-In the current state all server requests are sent over http which is not encrypted. In the future it is planed 
-to update this to https to ensure fully encrypted requests. In the meantime, it is recommended to only use this application over local
-networks or use a VPN to establish a secure connection to a local network. 
+~~In the current state all server requests are sent over http which is not encrypted.~~ During install there is an https option which generates self-signed certificates to encrypt all message data. This is the recommended option when installing the software (even on local networks). However, please understand these certificates are self-signed and require the user to install a certificate on their iPhone. Please understand the risks of using self-signed certificates before port forwarding and allowing global acess. 
 
 ## Server Installation
 
@@ -42,21 +41,25 @@ networks or use a VPN to establish a secure connection to a local network.
 
 2. Xcode Command Line Tools, Can be installed by typeing `xcode-select --install` in terminal 
 
-3. Python3 (sometimes included in Xcode Command Line Tools or can be installed at (python.org)[https://www.python.org/])
+3. Python3 (sometimes included in Xcode Command Line Tools or can be installed at [python.org](https://www.python.org/))
    
    ### Steps
    
    The simplest way is to use the install.sh script. It only downloads the required files. 
 
-4. `curl -o install.sh https://raw.githubusercontent.com/integraloftheday/Pebble-Imessager/master/installer.sh` 
+1. `curl -o install.sh https://raw.githubusercontent.com/integraloftheday/Pebble-Imessager/master/installer.sh` 
 
-5. `sh install.sh` The server should install inside a folder called "PebbleImessageServer" 
+2. `sh install.sh` Follow the steps on screen answering the prompts as they arise (For https make sure you enter the infromation prompted including the common name which could be something like `"Pebble-Imessager"`. The server should install inside a folder called "PebbleImessageServer" 
 
-6. `cd PebbleImessageServer`
+3. `cd PebbleImessageServer`
 
-7. `sh start.sh` To run the server 
+5. **NOTE** if **https** was picked during installation then you have to open `PebbleImessageServer/certs` and send the file `iMessager-ca.crt` to your iPhone. This allows for secure https encryption. To send the file you can email it and then install it by following [this guide](https://help.clouduss.com/ws-knowledge-base/installing-an-ssl-certificate-on-i-os-13). Please make sure the infromation in details is the same as what was entered in step 2. Once installed you can check if it is working by going to `https://yourLocalIp:port` and making sure the `404 page` loads and not a browser error.  
+
+4. `sh start.sh` To run the server 
 
 To keep the server running [screen](http://www.kinnetica.com/2011/05/29/using-screen-on-mac-os-x/) can be used. 
+* `screen` then press enter 
+* `sh start.sh` then to exit press the keys `[Ctrl] a d` 
 
 ### Configuration
 
@@ -159,7 +162,7 @@ The pebble app then will install the watch app.
 
 These steps must be done before the watch app can be used. 
 
-1. Click "Settings" and scroll to "Server IP" select and enter the Server's IP address and Port Number
+1. Click "Settings" and scroll to "Server IP" select and enter the Server's IP address and Port Number. **NOTE** when choosing http or https it must match the server configuration set up above.
 2. Click "key Generate" and updated `config.json` to match the key displayed on the watch app 
 3. Click "Data Fetch" to update the watches internal contacts and canned responses. This can be done after any update to `config.json`
 4. Click "Current" if everything was entered correctly and working the server IP the key and any contacts should be displayed.
