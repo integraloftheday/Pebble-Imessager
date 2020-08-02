@@ -146,7 +146,7 @@ Currently the watch app needs to be sideloaded but could be added to the rebble 
 
 ### Requirements
 
-1. A microphone enabled pebble watch 
+1. A pebble smart watch
 
 2. ~~A [rebble voice subscription](https://rebble.io)~~ (Only required for voice respones)
    
