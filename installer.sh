@@ -44,9 +44,9 @@ subjectAltName = @alt_names
 DNS.1 = localhost
 IP.1 = $localIP
 IP.2 = $publicIP" > PebbleImessageServer/certs/config.cnf
-openssl req -new -key PebbleImessageServer/certs/iMessager.key -config PebbleImessageServer/certs/config.cnf -out PebbleImessageServer/certs/iMessager.csr
+openssl req -new -key PebbleImessageServer/certs/iMessager.key -config PebbleImessageServer/certs/config.cnf -out PebbleImessageServer/certs/iMessager.crt
 echo ""
-echo "Install PebbleImessageServer/certs/iMessager-ca.key on your iPhone. Follow the instructions on the GitHub ReadMe"
+echo "Install PebbleImessageServer/certs/iMessager-ca.crt on your iPhone. Follow the instructions on the GitHub ReadMe"
 fi
 
 echo "Now edit config.json to add contacts, to change the port number, and to set the key" 
