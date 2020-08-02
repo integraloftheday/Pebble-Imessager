@@ -44,7 +44,8 @@ subjectAltName = @alt_names
 DNS.1 = localhost
 IP.1 = $localIP
 IP.2 = $publicIP" > PebbleImessageServer/certs/config.cnf
-openssl req -new -key PebbleImessageServer/certs/iMessager.key -config PebbleImessageServer/certs/config.cnf -out PebbleImessageServer/certs/iMessager.crt
+openssl req -new -key PebbleImessageServer/certs/iMessager.key -config PebbleImessageServer/certs/config.cnf -out PebbleImessageServer/certs/iMessager.csr
+openssl x509 -req -in PebbleImessageServer/certs/iMessager.csr -CA PebbleImessageServer/certs/iMessager-ca.crt -CAkey PebbleImessageServer/certs/iMessager-ca.key -CAcreateserial -out PebbleImessageServer/certs/iMessager.crt -days 365 -sha256 -extfile PebbleImessageServer/certs/config.cnf -extensions req_ext
 echo ""
 echo "Install PebbleImessageServer/certs/iMessager-ca.crt on your iPhone. Follow the instructions on the GitHub ReadMe"
 fi
