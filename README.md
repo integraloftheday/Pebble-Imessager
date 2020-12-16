@@ -53,7 +53,7 @@ This is the development branch of Pebble-Imessager to process changes before pus
 
 3. `cd PebbleImessageServer`
 
-5. **NOTE** if **https** was picked during installation then you have to open `PebbleImessageServer/certs` and send the file `iMessager-ca.crt` to your iPhone. This allows for secure https encryption. To send the file you can email it and then install it by following [this guide](https://help.clouduss.com/ws-knowledge-base/installing-an-ssl-certificate-on-i-os-13). Please make sure the infromation in details is the same as what was entered in step 2. Once installed you can check if it is working by going to `https://yourLocalIp:port` and making sure the `404 page` loads and not a browser error.  
+5. **NOTE** if **https** was picked during installation then you have to open `PebbleImessageServer/certs` and send the file `iMessager-ca.crt` to your iPhone. This allows for secure https encryption. To send the file you can email it and then install it by following [this guide](https://help.clouduss.com/ws-knowledge-base/installing-an-ssl-certificate-on-i-os-13). Please make sure the infromation in details is the same as what was entered in step 2. Once installed you can check if it is working by going to `https://yourLocalIp:port` (**On the phone**) and making sure the `404 page` loads and not a browser error.  
 
 4. `sh start.sh` To run the server 
 
