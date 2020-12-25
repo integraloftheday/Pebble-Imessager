@@ -80,11 +80,11 @@ def server_error(e):
 
 print("Starting Server")
 #Added option for https however ios does not like self signed certificates
-if(os.path.isfile('cert.pem') and os.path.isfile('key.pem')):
+if(os.path.isfile('./certs/iMessager.crt') and os.path.isfile('./certs/iMessager.key')):
     print("https:")
-    https_server = WSGIServer(('', getConfig()["port"]), app,certfile='cert.pem', keyfile='key.pem')
+    https_server = WSGIServer(('', getConfig()["port"]), app,certfile='./certs/iMessager.crt', keyfile='./certs/iMessager.key')
     https_server.serve_forever()
 else:
     print("http:")
-    http_server = WSGIServer(('', getConfig()["port"]))
+    http_server = WSGIServer(('', getConfig()["port"]),app)
     http_server.serve_forever()

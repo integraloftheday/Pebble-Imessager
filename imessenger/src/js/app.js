@@ -159,11 +159,13 @@ function parseReplies(){
 		var Qreplies = Settings.data('replies'); 
 		var sections = []; 
 		for(var i = 0; i < Qreplies.value.responses.length; i++){
-			if((Qreplies.value.responses[i] == "<Voice>")&& Feature.microphone()){ //only appends voice if watch supports mic
-				sections.push({
-						title:'Voice',
-                       				icon: 'images/pebble_msg_voice_icon.png'
-					});
+			if((Qreplies.value.responses[i] == "<Voice>")){
+				if(Feature.microphone()){ //only appends if microphone is present
+					sections.push({
+							title:'Voice',
+                       					icon: 'images/pebble_msg_voice_icon.png'
+						});
+				}
 			}
 			else if(Qreplies.value.responses[i] == "<Keyboard>"){
 				sections.push({
