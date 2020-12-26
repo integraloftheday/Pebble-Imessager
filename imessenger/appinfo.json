@@ -34,6 +34,11 @@
         "type": "bitmap"
       },
       {
+        "file": "images/pebble_msg_sent_icon.png",
+        "name": "SENT",
+        "type": "bitmap"
+      },
+      {
         "file": "images/logo_splash.png",
         "name": "IMAGE_LOGO_SPLASH",
         "type": "bitmap"

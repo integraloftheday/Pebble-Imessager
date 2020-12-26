@@ -232,6 +232,17 @@ function keyGen(length){
    return result;
 }
 
+function msgConf(){
+	//function to confirm message has been sent
+	var succWait = 3000; 
+	succMsg.show();
+	setTimeout(function(){
+		menu.show();
+		succMsg.hide();
+		repliesMenu.hide();
+	}, succWait);
+
+}
 
 function msgSend(to,msg){
 	//to: contact name
@@ -255,6 +266,7 @@ function msgSend(to,msg){
 					function(data,status){
 						//worked
 						console.log("success");
+						msgConf();
 					},
 					function(errorV,status){
 						//error
@@ -275,6 +287,7 @@ function msgSend(to,msg){
                         	function(data,status){
                         	        //worked
                         	        console.log("success");
+					msgConf();
                         	},
                         	function(errorV,status){
                         	        //error
@@ -291,6 +304,7 @@ function msgSend(to,msg){
 			function(data,status){
 				//worked
                                 console.log("success");
+				msgConf();
                         },
                         function(errorV,status){
                                 //error
@@ -319,6 +333,12 @@ var about = new UI.Card({
 	body: "This is a simple app built with pebblejs to send sms on iphone", 
 	titleColor:"blue" 
 });
+
+var succMsg = new UI.Card({
+	title:"Sent",
+	subtitle:" ",
+	banner:'images/pebble_msg_sent_icon.png'
+})
 
 var errorMsg= new UI.Card({
         title:"Error",
