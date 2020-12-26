@@ -28,6 +28,7 @@ This is the development branch of Pebble-Imessager to process changes before pus
 * **7-25-20** : Created ability for Canned Responses. This depends on editing `config.json`  and changing the array `"responses"` within the `"quickReplyies"` object. This can be updated to any length of array responses and appear in such order inside the app. However for those who want direct acess to voice commands `"on"` in `config.json` when set to `"false"` removes all response. With the addition of these Canned Respones `"Current"` in settings was updated to display them and `Contact Fetch` was changed to `Data Fetch`  
 * **7-26-20** : Allowed for the Canned Response menu to be fully customizable (allowing setting location of `voice` and `keyboard`. The `keyboard` allows for text input which uses [PebbleJS Keyboard](https://github.com/jor3l/pebblejs-keyboard) as the keyboard module. 
 * **8-2-20** : Added https support using [openssl](https://www.openssl.org/) following this [IOS 13 SSL guide](https://jaanus.com/ios-13-certificates/). The installer now has an https option. This option creates the required self-signed certificates needed to encrypt an ip address. After the install is done the user now has to install `iMessager-ca.crt` as a trusted certificate to their iphone. This includeds enabling root acess. 
+* **12-16-20** : Added a sent message page. To notify user that the message was properly sent.  
 
 ## A Security Note
 
@@ -37,25 +38,27 @@ This is the development branch of Pebble-Imessager to process changes before pus
 
 ### Requirments
 
-1. A Mac or [emulated Mac](https://github.com/foxlet/macOS-Simple-KVM) with iMessage signed in 
+1. A Mac or [emulated Mac](https://github.com/foxlet/macOS-Simple-KVM) with iMessage signed in. Tested and working on macOs Catalina, Mojave and should work on prior versions. Some reports of it not working on Big Sur.
 
 2. Xcode Command Line Tools, Can be installed by typeing `xcode-select --install` in terminal 
 
 3. Python3 (sometimes included in Xcode Command Line Tools or can be installed at [python.org](https://www.python.org/))
    
-   ### Steps
+### Steps
    
-   The simplest way is to use the install.sh script. It only downloads the required files. 
+The simplest way is to use the install.sh script. It only downloads the required files. 
 
 1. `curl -o install.sh https://raw.githubusercontent.com/integraloftheday/Pebble-Imessager/master/installer.sh` 
 
-2. `sh install.sh` Follow the steps on screen answering the prompts as they arise (For https make sure you enter the infromation prompted including the common name which could be something like `"Pebble-Imessager"`. The server should install inside a folder called "PebbleImessageServer" 
+2. `sh install.sh` Follow the steps on screen answering the prompts as they arise (For https make sure you enter  the infromation prompted including the common name which could be something like `"Pebble-Imessager"`. The server should install inside a folder called "PebbleImessageServer" 
 
 3. `cd PebbleImessageServer`
 
-5. **NOTE** if **https** was picked during installation then you have to open `PebbleImessageServer/certs` and send the file `iMessager-ca.crt` to your iPhone. This allows for secure https encryption. To send the file you can email it and then install it by following [this guide](https://help.clouduss.com/ws-knowledge-base/installing-an-ssl-certificate-on-i-os-13). Please make sure the infromation in details is the same as what was entered in step 2. Once installed you can check if it is working by going to `https://yourLocalIp:port` (**On the phone**) and making sure the `404 page` loads and not a browser error.  
+4. **NOTE** if **https** was picked during installation then you have to open `PebbleImessageServer/certs` and send the file `iMessager-ca.crt` to your iPhone. This allows for secure https encryption. To send the file you can email it and then install it by following [this guide](https://help.clouduss.com/ws-knowledge-base/installing-an-ssl-certificate-on-i-os-13). Please make sure the infromation in details is the same as what was entered in step 2. Once installed you can check if it is working by going to `https://yourLocalIp:port` (**On the phone**) and making sure the `404 page` loads and not a browser error.  
 
-4. `sh start.sh` To run the server 
+5. `sh start.sh` To run the server 
+
+6. If you want global acess to the server consider port forwarding and then setting the server IP to your public IP. 
 
 To keep the server running [screen](http://www.kinnetica.com/2011/05/29/using-screen-on-mac-os-x/) can be used. 
 * `screen` then press enter 
