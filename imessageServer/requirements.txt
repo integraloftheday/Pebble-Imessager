@@ -1,6 +1,6 @@
 click==7.1.2
 Flask==1.1.2
-Flask-Cors==3.0.8
+Flask-Cors==3.0.9
 gevent==20.6.2
 greenlet==0.4.16
 itsdangerous==1.1.0
